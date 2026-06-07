@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:graduation/app_colors.dart';
 import 'package:graduation/home_page.dart';
 import 'package:graduation/order_situations.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+// import 'package:google_nav_bar/google_nav_bar.dart';
+// import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -250,8 +250,8 @@ class _MainPageState extends State<MainPage> {
 
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(
-          bottom: 10,
-          top: 10,
+          bottom: 3,
+          top: 3,
         ), // مسافة أمان من الأعلى والأسفل
         margin: const EdgeInsets.symmetric(
           horizontal: 16,
@@ -278,7 +278,7 @@ class _MainPageState extends State<MainPage> {
           borderRadius: BorderRadius.circular(24),
           child: Theme(
             data: Theme.of(context).copyWith(
-              splashColor: Colors.transparent, // إزالة تأثير النقر الافتراضي
+              splashColor: const Color.fromARGB(0, 245, 208, 208), // إزالة تأثير النقر الافتراضي
               highlightColor:
                   Colors.transparent, // إزالة تأثير التحديد الافتراضي
             ),
