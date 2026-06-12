@@ -65,10 +65,10 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color:AppColors.primary.withOpacity(0.3), width: 1.5),
+                  border: Border.all(color:AppColors.primary.withValues(alpha: 0.3), width: 1.5),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.12),
+                      color: AppColors.primary.withValues(alpha: 0.12),
                       blurRadius: 20,
                       spreadRadius: 10,
                       offset: Offset(0, 0), // that mean the light around all the container 

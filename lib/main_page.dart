@@ -62,7 +62,7 @@ class _MainPageState extends State<MainPage> {
             color: AppColors.surface,
             border: Border(
               left: BorderSide(
-                color: AppColors.primary.withOpacity(0.4),
+                color: AppColors.primary.withValues(alpha: 0.4),
                 width: 1.5,
               ),
             ),
@@ -165,7 +165,7 @@ class _MainPageState extends State<MainPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
-                      color: AppColors.primary.withOpacity(0.3),
+                      color: AppColors.primary.withValues(alpha: 0.3),
                       width: 1,
                     ), // تحديد مضيء خفيف
                   ),
@@ -217,7 +217,7 @@ class _MainPageState extends State<MainPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
-                      color: Colors.redAccent.withOpacity(0.2),
+                      color: Colors.redAccent.withValues(alpha: 0.2),
                       width: 1,
                     ), // إطار أحمر خفيف
                   ),
@@ -262,12 +262,12 @@ class _MainPageState extends State<MainPage> {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.2),
+              color: AppColors.primary.withValues(alpha: 0.2),
               blurRadius: 10,
               offset: const Offset(0, 0),
             ),
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.2),
+              color: AppColors.primary.withValues(alpha: 0.2),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
