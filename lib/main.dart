@@ -1,19 +1,19 @@
 
 import 'package:flutter/material.dart';
-// import 'package:graduation/main_page.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation/main_page.dart';
+import 'package:provider/provider.dart';
 import 'package:graduation/app_colors.dart';
-
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'service_provider/business_logic/available_orders/available_orders_bloc.dart';
-import 'service_provider/business_logic/available_orders/available_orders_event.dart';
-import 'service_provider/business_logic/subscription/subscription_bloc.dart';
-import 'service_provider/business_logic/subscription/subscription_event.dart';
-
-import 'service_provider/presentation/screens/available_orders_screen.dart';
-import 'service_provider/presentation/screens/subscription_payment_screen.dart';
+import 'business_logic/auth/auth_provider.dart';
+import 'business_logic/auth/signup_provider.dart';
+import 'business_logic/auth/otp_provider.dart';
+import 'business_logic/main/main_page_provider.dart';
+import 'business_logic/main/home_page_provider.dart';
+import 'business_logic/main/order_situations_provider.dart';
+import 'business_logic/splash/splash_provider.dart';
+import 'business_logic/order/create_order_provider.dart';
+import 'service_provider/business_logic/available_orders/available_orders_provider.dart';
+import 'service_provider/business_logic/subscription/subscription_provider.dart';
 import 'service_provider/ProviderDashboardLaunchScreen.dart';
 
 void main() {
@@ -26,10 +26,38 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiProvider(
       providers: [
-        BlocProvider<AvailableOrdersBloc>(create: (context) => AvailableOrdersBloc()..add(FetchAvailableOrders())),
-        BlocProvider<SubscriptionBloc>(create: (context) => SubscriptionBloc()..add(CheckSubscriptionStatus())),
+        ChangeNotifierProvider(
+          create: (_) => AvailableOrdersProvider()..fetchAvailableOrders(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SubscriptionProvider()..checkSubscriptionStatus(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MainPageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => HomePageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrderSituationsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SignupProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OtpProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SplashProvider()..startTimer(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CreateOrderProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'بوابة مقدم الخدمة',
@@ -41,7 +69,8 @@ class MyApp extends StatelessWidget {
         ),
         locale: const Locale('ar', 'AE'),
         supportedLocales: const [Locale('ar', 'AE')],
-        home: const ProviderDashboardLaunchScreen(),localizationsDelegates: const [
+        home: const ProviderDashboardLaunchScreen(),
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,

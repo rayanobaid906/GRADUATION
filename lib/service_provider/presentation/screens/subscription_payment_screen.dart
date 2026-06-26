@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/subscription/subscription_bloc.dart';
-import '../../business_logic/subscription/subscription_event.dart';
+import 'package:provider/provider.dart';
+import '../../business_logic/subscription/subscription_provider.dart';
 import 'package:graduation/app_colors.dart';
-
-import '../../business_logic/subscription/subscription_state.dart';
 
 class SubscriptionPaymentScreen extends StatefulWidget {
   const SubscriptionPaymentScreen({Key? key}) : super(key: key);
@@ -26,28 +23,37 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('تفعيل الاشتراك السنوي', style: TextStyle(color: AppColors.textPrimary)), backgroundColor: AppColors.surface,iconTheme: const IconThemeData(color: AppColors.textPrimary)),
-      body: BlocConsumer<SubscriptionBloc, SubscriptionState>(
-        listener: (context, state) {
-          if (state is SubscriptionSubmitting) {
-            showDialog(context: context, barrierDismissible: false, builder: (_) => const Center(child: CircularProgressIndicator()));
+      appBar: AppBar(title: const Text('تفعيل الاشتراك السنوي', style: TextStyle(color: AppColors.textPrimary)), backgroundColor: AppColors.surface, iconTheme: const IconThemeData(color: AppColors.textPrimary)),
+      body: Consumer<SubscriptionProvider>(
+        builder: (context, provider, child) {
+          if (provider.successMessage != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(provider.successMessage!), backgroundColor: Colors.green),
+              );
+              provider.clearMessages();
+            });
           }
-          if (state is SubscriptionSubmitSuccess) {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم إرسال رقم المعاملة للإدارة للتفعيل اليدوي!'), backgroundColor: Colors.green));
+
+          if (provider.errorMessage != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(provider.errorMessage!), backgroundColor: Colors.red),
+              );
+              provider.clearMessages();
+            });
           }
-        },
-        builder: (context, state) {
-          bool isActive = false;
-          String? pendingId;
+
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          bool isActive = provider.isActive;
+          String? pendingId = provider.pendingTransactionId;
           String infoText = "الحساب غير نشط - يرجى دفع الاشتراك لتفعيل تقديم العروض.";
 
-          if (state is SubscriptionStatusLoaded) {
-            isActive = state.isActive;
-            pendingId = state.pendingTransactionId;
-            if (isActive) infoText = "اشتراكك نشط وصالح لتقديم العروض.";
-            if (pendingId != null) infoText = "يوجد معاملة معلقة برقم ($pendingId) بانتظار موافقة المسؤول.";
-          }
+          if (isActive) infoText = "اشتراكك نشط وصالح لتقديم العروض.";
+          if (pendingId != null) infoText = "يوجد معاملة معلقة برقم ($pendingId) بانتظار موافقة المسؤول.";
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -75,12 +81,19 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen> {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14), backgroundColor: AppColors.surface),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          context.read<SubscriptionBloc>().add(SubmitSubscriptionPayment(transactionId: _txController.text.trim()));
-                        }
-                      },
-                      child: const Text('إرسال المعاملة للمدير', style: TextStyle(color: AppColors.textPrimary) ),
+                      onPressed: provider.isSubmitting
+                          ? null
+                          : () {
+                              if (_formKey.currentState!.validate()) {
+                                provider.submitSubscriptionPayment(_txController.text.trim());
+                              }
+                            },
+                      child: provider.isSubmitting
+                          ? const SizedBox(
+                              height: 20,
+                              child: Center(child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)),
+                            )
+                          : const Text('إرسال المعاملة للمدير', style: TextStyle(color: AppColors.textPrimary)),
                     ),
                   ]
                 ],

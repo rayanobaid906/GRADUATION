@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/available_orders/available_orders_bloc.dart';
-import '../../business_logic/available_orders/available_orders_event.dart';
-import '../../business_logic/available_orders/available_orders_state.dart';
+import 'package:provider/provider.dart';
+import '../../business_logic/available_orders/available_orders_provider.dart';
 import 'order_details_provider_screen.dart';
 import 'package:graduation/app_colors.dart';
-
 
 class AvailableOrdersScreen extends StatelessWidget {
   const AvailableOrdersScreen({Key? key}) : super(key: key);
@@ -17,81 +14,89 @@ class AvailableOrdersScreen extends StatelessWidget {
         title: const Text('الطلبات المتاحة لتخصصك', style: TextStyle(color: AppColors.textPrimary)),iconTheme: const IconThemeData(color: AppColors.textPrimary), 
         backgroundColor: AppColors.surface,
       ),
-      body: BlocConsumer<AvailableOrdersBloc, AvailableOrdersState>(
-        listener: (context, state) {
-          if (state is OfferSubmittedSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('تم إرسال عرض الفحص الخاص بك بنجاح!'), backgroundColor: Colors.green),
-            );
+      body: Consumer<AvailableOrdersProvider>(
+        builder: (context, provider, child) {
+          if (provider.successMessage != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(provider.successMessage!), backgroundColor: Colors.green),
+              );
+              provider.clearMessages();
+            });
           }
-        },
-        builder: (context, state) {
-          if (state is AvailableOrdersLoading) {
+
+          if (provider.errorMessage != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(provider.errorMessage!), backgroundColor: Colors.red),
+              );
+              provider.clearMessages();
+            });
+          }
+
+          if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is AvailableOrdersError) {
-            return Center(child: Text(state.message));
-          } else if (state is AvailableOrdersLoaded) {
-            final orders = state.orders;
-            if (orders.isEmpty) {
-              return const Center(child: Text('لا توجد طلبات مفتوحة حالياً.'));
-            }
-            return ListView.builder(
-              padding: const EdgeInsets.all(12),
-              itemCount: orders.length,
-              itemBuilder: (context, index) {
-                final order = orders[index];
-                return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  color: AppColors.surface,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('طلب رقم #${order.id}', style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 8),
-                        Text(order.description, style: const TextStyle(fontSize: 14, color: AppColors.textPrimary)),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            const Icon(Icons.location_on, size: 16, color: Colors.red),
-                            const SizedBox(width: 4),
-                            Expanded(child: Text(order.addressText, style: const TextStyle(fontSize: 12, color: AppColors.textPrimary))),
-                          ],
-                        ),
-                        const Divider(height: 24),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14), backgroundColor: AppColors.background),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => OrderDetailsProviderScreen(orderId: order.id)),
-                                  );
-                                },
-                                child: const Text('التفاصيل والمتابعة', style: TextStyle(color: AppColors.textPrimary)),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14), backgroundColor: AppColors.background),
-                                onPressed: () => _showOfferSheet(context, order.id),
-                                child: const Text('تقديم عرض سعر', style: TextStyle(color: AppColors.textPrimary) ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
           }
-          return const Center(child: Text('يرجى تحديث الصفحة'));
+
+          final orders = provider.orders;
+          if (orders.isEmpty) {
+            return const Center(child: Text('لا توجد طلبات مفتوحة حالياً.'));
+          }
+          return ListView.builder(
+            padding: const EdgeInsets.all(12),
+            itemCount: orders.length,
+            itemBuilder: (context, index) {
+              final order = orders[index];
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                color: AppColors.surface,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('طلب رقم #${order.id}', style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 8),
+                      Text(order.description, style: const TextStyle(fontSize: 14, color: AppColors.textPrimary)),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Icon(Icons.location_on, size: 16, color: Colors.red),
+                          const SizedBox(width: 4),
+                          Expanded(child: Text(order.addressText, style: const TextStyle(fontSize: 12, color: AppColors.textPrimary))),
+                        ],
+                      ),
+                      const Divider(height: 24),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14), backgroundColor: AppColors.background),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderDetailsProviderScreen(orderId: order.id)),
+                                );
+                              },
+                              child: const Text('التفاصيل والمتابعة', style: TextStyle(color: AppColors.textPrimary)),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14), backgroundColor: AppColors.background),
+                              onPressed: () => _showOfferSheet(context, order.id),
+                              child: const Text('تقديم عرض سعر', style: TextStyle(color: AppColors.textPrimary)),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         },
       ),
     );
@@ -131,13 +136,15 @@ class AvailableOrdersScreen extends StatelessWidget {
                 onPressed: () {
                   final price = double.tryParse(priceController.text);
                   if (price != null) {
-                    context.read<AvailableOrdersBloc>().add(
-                          SubmitOfferEvent(orderId: orderId, priceToCheck: price, note: noteController.text),
+                    context.read<AvailableOrdersProvider>().submitOffer(
+                          orderId: orderId,
+                          priceToCheck: price,
+                          note: noteController.text,
                         );
                     Navigator.pop(sheetContext);
                   }
                 },
-                child: const Text('تأكيد وإرسال العرض', style: TextStyle(color: AppColors.textPrimary) ),
+                child: const Text('تأكيد وإرسال العرض', style: TextStyle(color: AppColors.textPrimary)),
               ),
             ),
             const SizedBox(height: 20),

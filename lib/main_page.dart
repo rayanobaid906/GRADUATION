@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:graduation/app_colors.dart';
 import 'package:graduation/home_page.dart';
 import 'package:graduation/order_situations.dart';
+import 'package:graduation/business_logic/main/main_page_provider.dart';
 // import 'package:google_nav_bar/google_nav_bar.dart';
 // import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  bool isDarkMode = true;
-  int _selectedIndex = 0;
-   List<Widget> get _pages => [
-    const HomePage(),
-    const OrderSituations(),
+  static const List<Widget> _pages = [
+    HomePage(),
+    OrderSituations(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<MainPageProvider>();
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -57,12 +53,12 @@ class _MainPageState extends State<MainPage> {
       ),
       drawer: Drawer(
         backgroundColor: AppColors.surface,
-        child: Container(
+          child: Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
             border: Border(
               left: BorderSide(
-                color: AppColors.primary.withValues(alpha: 0.4),
+                color: AppColors.primary.withOpacity(0.4),
                 width: 1.5,
               ),
             ),
@@ -165,7 +161,7 @@ class _MainPageState extends State<MainPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
-                      color: AppColors.primary.withValues(alpha: 0.3),
+                      color: AppColors.primary.withOpacity(0.3),
                       width: 1,
                     ), // تحديد مضيء خفيف
                   ),
@@ -217,7 +213,7 @@ class _MainPageState extends State<MainPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
-                      color: Colors.redAccent.withValues(alpha: 0.2),
+                      color: Colors.redAccent.withOpacity(0.2),
                       width: 1,
                     ), // إطار أحمر خفيف
                   ),
@@ -246,7 +242,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      body: _pages[_selectedIndex],
+      body: _pages[provider.selectedIndex],
 
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(
@@ -262,12 +258,12 @@ class _MainPageState extends State<MainPage> {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.2),
+              color: AppColors.primary.withOpacity(0.2),
               blurRadius: 10,
               offset: const Offset(0, 0),
             ),
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.2),
+              color: AppColors.primary.withOpacity(0.2),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -283,12 +279,8 @@ class _MainPageState extends State<MainPage> {
                   Colors.transparent, // إزالة تأثير التحديد الافتراضي
             ),
             child: BottomNavigationBar(
-              currentIndex: _selectedIndex,
-              onTap: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
+              currentIndex: provider.selectedIndex,
+              onTap: provider.setSelectedIndex,
               backgroundColor: Colors.transparent,
               selectedItemColor: AppColors.primary,
               unselectedIconTheme: const IconThemeData(size: 24),
