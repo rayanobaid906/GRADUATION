@@ -1,5 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:graduation/login_page.dart';
+import 'package:graduation/main_page.dart';
+import 'package:graduation/otp_page.dart';
+import 'package:graduation/sign_up.dart';
+import 'package:graduation/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'package:graduation/app_colors.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -69,7 +74,7 @@ class MyApp extends StatelessWidget {
         ),
         locale: const Locale('ar', 'AE'),
         supportedLocales: const [Locale('ar', 'AE')],
-        home: const ProviderDashboardLaunchScreen(),
+        home: const ProviderDashboard(),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

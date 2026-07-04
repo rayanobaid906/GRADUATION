@@ -52,7 +52,7 @@ class MainPage extends StatelessWidget {
         ],
       ),
       drawer: Drawer(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.textPrimary,
           child: Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
@@ -62,7 +62,7 @@ class MainPage extends StatelessWidget {
                 width: 1.5,
               ),
             ),
-          ),
+          ), 
           child: Column(
             children: [
               // عنوان القائمة العلوي

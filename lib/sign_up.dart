@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation/custom_textfiled.dart';
 import 'package:graduation/app_colors.dart';
+import 'package:graduation/login_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -171,7 +172,9 @@ class _SignupPageState extends State<SignupPage> {
                      ),
                    ),
                    TextButton(
-                     onPressed: () {},
+                     onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));},
                      child: Text(
                        "Sign In",
                        style: TextStyle(
