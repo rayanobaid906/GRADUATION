@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation/custom_textfiled.dart';
 import 'package:graduation/app_colors.dart';
+import 'package:graduation/login_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -12,9 +13,9 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  TextEditingController  _emailController = TextEditingController();
-  TextEditingController  _passwordController = TextEditingController();
-  TextEditingController  _numberController = TextEditingController();
+  final TextEditingController  _emailController = TextEditingController();
+  final TextEditingController  _passwordController = TextEditingController();
+  final TextEditingController  _numberController = TextEditingController();
   bool _isPasswordHidden = true;
   @override
   void dispose() {
@@ -67,12 +68,12 @@ class _SignupPageState extends State<SignupPage> {
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: AppColors.primary.withOpacity(0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     width: 1.5,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.12),
+                      color: AppColors.primary.withValues(alpha: 0.12),
                       blurRadius: 20,
                       spreadRadius: 10,
                       offset: Offset(
@@ -171,7 +172,9 @@ class _SignupPageState extends State<SignupPage> {
                      ),
                    ),
                    TextButton(
-                     onPressed: () {},
+                     onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));},
                      child: Text(
                        "Sign In",
                        style: TextStyle(

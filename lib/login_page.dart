@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation/custom_textfiled.dart';
 import 'package:graduation/app_colors.dart';
+import 'package:graduation/sign_up.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -65,10 +66,10 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color:AppColors.primary.withOpacity(0.3), width: 1.5),
+                  border: Border.all(color:AppColors.primary.withValues(alpha: 0.3), width: 1.5),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.12),
+                      color: AppColors.primary.withValues(alpha: 0.12),
                       blurRadius: 20,
                       spreadRadius: 10,
                       offset: Offset(0, 0), // that mean the light around all the container 
@@ -157,7 +158,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignupPage()));},
                     child: Text(
                       "Sign Up",
                       style: TextStyle(
