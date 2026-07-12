@@ -15,11 +15,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   bool _isPasswordHidden = true;
   final ApiService apiService = ApiService();
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -33,18 +34,18 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 100),
-              Icon(
+              const SizedBox(height: 100),
+              const Icon(
                 Icons.home_repair_service_rounded,
                 size: 100,
                 color: AppColors.primary,
               ),
-              SizedBox(height: 24),
-              Text(
+              const SizedBox(height: 24),
+              const Text(
                 "Welcome Back",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -53,8 +54,8 @@ class _LoginPageState extends State<LoginPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 "login to continue the app ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -63,9 +64,9 @@ class _LoginPageState extends State<LoginPage> {
                   color: AppColors.textSecondary,
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Container(
-                padding: EdgeInsets.all(24),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
@@ -78,10 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: AppColors.primary.withOpacity(0.12),
                       blurRadius: 20,
                       spreadRadius: 10,
-                      offset: Offset(
-                        0,
-                        0,
-                      ), // that mean the light around all the container
+                      offset: const Offset(0, 0), // تأثير الإضاءة يحيط بالحاوية بالكامل
                     ),
                   ],
                 ),
@@ -93,8 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'Email',
                       prefixIcon: Icons.email_outlined,
                     ),
-                    SizedBox(height: 16),
-
+                    const SizedBox(height: 16),
                     CustomTextField(
                       controller: _passwordController,
                       hintText: 'Password',
@@ -108,19 +105,19 @@ class _LoginPageState extends State<LoginPage> {
                           color: AppColors.textSecondary,
                         ),
                         onPressed: () {
-                          // ╪¬╪¡╪»┘è╪½ ╪º┘ä╪¡╪º┘ä╪⌐ ┘ä╪¬╪¿╪»┘è┘ä ╪º┘ä╪▒╪ñ┘è╪⌐
+                          // تحديث الحالة لتبديل إمكانية رؤية كلمة المرور
                           setState(() {
                             _isPasswordHidden = !_isPasswordHidden;
                           });
                         },
                       ),
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Container(
-                      padding: EdgeInsets.only(left: 150),
+                      padding: const EdgeInsets.only(left: 150),
                       child: TextButton(
                         onPressed: () {},
-                        child: Text(
+                        child: const Text(
                           "forget password ?",
                           textAlign: TextAlign.right,
                           style: TextStyle(
@@ -135,8 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 24),
-
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
                   final authProvider = Provider.of<AuthProvider>(
@@ -159,15 +155,14 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   }
                 },
-
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  padding: EdgeInsets.symmetric(vertical: 14),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   "Login",
                   style: TextStyle(
                     fontFamily: 'Cairo',
@@ -177,11 +172,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 14),
+              const SizedBox(height: 14),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "dont have account?",
                     style: TextStyle(
                       fontSize: 14,
@@ -190,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: Text(
+                    child: const Text(
                       "Sign Up",
                       style: TextStyle(
                         fontFamily: 'Cairo',
@@ -209,4 +204,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

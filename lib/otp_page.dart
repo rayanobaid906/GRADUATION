@@ -20,7 +20,7 @@ class _OtpPageState extends State<OtpPage> {
   @override
   void dispose() {
     for (var controller in _controllers) {
-      controller.dispose(); // ╪¬╪ú┘â╪» ┘à┘å ╪¬╪¡╪▒┘è╪▒ ╪º┘ä┘à┘ê╪º╪▒╪» ╪╣┘å╪» ╪º┘ä╪¬╪«┘ä╪╡ ┘à┘å ╪º┘ä╪╡┘ü╪¡╪⌐
+      controller.dispose(); // تأكد من تحرير الموارد عند التخلص من الصفحة
     }
     super.dispose();
   }
@@ -64,7 +64,7 @@ class _OtpPageState extends State<OtpPage> {
               ),
               const SizedBox(height: 40),
 
-              // ╪º┘ä┘â╪º╪▒╪» ╪º┘ä┘à╪╢┘è╪í ╪º┘ä╪░┘è ┘è╪¡╪¬┘ê┘è ╪╣┘ä┘ë ╪¡┘é┘ê┘ä ╪º┘ä┘Ç OTP
+              // الكارد المضيء الذي يحتوي على حقول الـ OTP
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
@@ -89,7 +89,7 @@ class _OtpPageState extends State<OtpPage> {
               ),
               const SizedBox(height: 30),
 
-              // ╪▓╪▒ ╪º┘ä╪¬╪ú┘â┘è╪»
+              // زر التأكيد
               ElevatedButton(
                 onPressed: () async {
                   final authProvider = Provider.of<AuthProvider>(
@@ -142,7 +142,7 @@ class _OtpPageState extends State<OtpPage> {
     );
   }
 
-  // these is for otp text field
+  // ويدجت مخصصة لبناء مربعات إدخال الـ OTP
   Widget _buildOtpBox(int index) {
     return SizedBox(
       width: 45,
@@ -157,7 +157,7 @@ class _OtpPageState extends State<OtpPage> {
           fontWeight: FontWeight.bold,
         ),
         decoration: InputDecoration(
-          counterText: "", // ╪Ñ╪«┘ü╪º╪í ╪╣╪»╪º╪» ╪º┘ä╪¡╪▒┘ê┘ü ╪¿╪º┘ä╪ú╪│┘ü┘ä
+          counterText: "", // إخفاء عداد الحروف بالأسفل
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Color(0xFF2C304D)),
@@ -168,18 +168,17 @@ class _OtpPageState extends State<OtpPage> {
           ),
         ),
         onChanged: (value) {
-          if (value.isNotEmpty && index < 3) {
+          if (value.isNotEmpty && index < 5) {
             FocusScope.of(
               context,
-            ).nextFocus(); // ╪º┘ä╪º┘å╪¬┘é╪º┘ä ╪º┘ä╪¬┘ä┘é╪º╪ª┘è ┘ä┘ä┘à╪▒╪¿╪╣ ╪º┘ä╪¬╪º┘ä┘è ╪╣┘å╪» ╪º┘ä┘â╪¬╪º╪¿╪⌐
+            ).nextFocus(); // الانتقال التلقائي للمربع التالي عند الكتابة
           } else if (value.isEmpty && index > 0) {
             FocusScope.of(
               context,
-            ).previousFocus(); // ╪º┘ä╪▒╪¼┘ê╪╣ ┘ä┘ä┘à╪▒╪¿╪╣ ╪º┘ä╪│╪º╪¿┘é ╪╣┘å╪» ╪º┘ä┘à╪│╪¡
+            ).previousFocus(); // الرجوع للمربع السابق عند المسح
           }
         },
       ),
     );
   }
 }
-

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation/app_colors.dart';
 import 'package:graduation/create_order.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -13,39 +14,38 @@ class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
   Timer? _timer;
-  
 
   final List<Map<String, dynamic>> _benefits = [
     {
-      "title": "╪º╪│╪¬┘é╪¿┘ä ╪╣╪▒┘ê╪╢ ╪º┘ä╪ú╪│╪╣╪º╪▒",
-      "desc": "╪ú┘å╪┤╪ª ╪╖┘ä╪¿ ╪╡┘è╪º┘å╪⌐ ┘ê╪»╪╣ ╪º┘ä┘ü┘å┘è┘è┘å ╪º┘ä┘à╪¬╪«╪╡╪╡┘è┘å ┘è┘é╪»┘à┘ê┘å ╪╣╪▒┘ê╪╢┘ç┘à",
+      "title": "استقبل عروض الأسعار",
+      "desc": "أنشئ طلب صيانة ودع الفنيين المتخصصين يقدمون عروضهم",
       "icon": Icons.local_offer_rounded,
       "bg": const Color(0xFF1E293B),
     },
     {
-      "title": "╪«╪╡┘ê╪╡┘è╪⌐ ┘ê╪ú┘à╪º┘å ╪¬╪º┘à",
-      "desc": "╪▒┘é┘à ┘ç╪º╪¬┘ü┘â ┘à╪¡┘à┘è ╪¬┘à╪º┘à╪º┘ï ┘ê┘ä╪º ┘è╪╕┘ç╪▒ ┘ä┘ä╪╖╪▒┘ü ╪º┘ä╪ó╪«╪▒ ╪Ñ┘ä╪º ╪¿╪╣╪» ┘é╪¿┘ê┘ä┘â",
+      "title": "خصوصية وأمان تام",
+      "desc": "رقم هاتفك محمي تماماً ولا يظهر للطرف الآخر إلا بعد قبولك",
       "icon": Icons.shield_rounded,
       "bg": const Color(0xFF1E2640),
     },
     {
-      "title": "╪Ñ╪║┘ä╪º┘é ╪░┘â┘è ╪¿╪º┘ä┘Ç QR",
-      "desc": "╪¬╪ú┘â┘è╪» ╪Ñ┘å┘ç╪º╪í ╪º┘ä╪╣┘à┘ä ┘ê╪º┘ä╪»┘ü╪╣ ┘è╪¬┘à ╪¿╪ú┘à╪º┘å ╪¬╪º┘à ╪¿┘à╪¼╪▒╪» ┘à╪│╪¡ ╪▒┘à╪▓ ╪º┘ä┘Ç QR",
+      "title": "إغلاق ذكي بالـ QR",
+      "desc": "تأكيد إنهاء العمل والدفع يتم بأمان تام بمجرد مسح رمز الـ QR",
       "icon": Icons.qr_code_scanner_rounded,
       "bg": const Color(0xFF2E1B28),
     },
   ];
 
   final List<Map<String, dynamic>> _services = [
-    {"name": "┘â┘ç╪▒╪¿╪º╪í", "icon": Icons.bolt_rounded, "color": Colors.amber},
-    {"name": "╪│╪¿╪º┘â╪⌐", "icon": Icons.water_drop_rounded, "color": Colors.blue},
+    {"name": "كهرباء", "icon": Icons.bolt_rounded, "color": Colors.amber},
+    {"name": "سباكة", "icon": Icons.water_drop_rounded, "color": Colors.blue},
     {
-      "name": "╪ú╪¼┘ç╪▓╪⌐ ┘à┘å╪▓┘ä┘è╪⌐",
+      "name": "أجهزة منزلية",
       "icon": Icons.kitchen_rounded,
       "color": Colors.orange,
     },
     {
-      "name": "╪¬┘â┘è┘è┘ü ┘ê╪¬╪¿╪▒┘è╪»",
+      "name": "تكييف وتبريد",
       "icon": Icons.ac_unit_rounded,
       "color": Colors.cyan,
     },
@@ -81,13 +81,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      
       physics: const BouncingScrollPhysics(),
-       
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. ╪º┘ä┘Ç Header ╪º┘ä╪¬╪▒╪¡┘è╪¿┘è (╪¬┘à ╪¬╪╡╪║┘è╪▒ ╪º┘ä┘Ç Padding ┘ê╪º┘ä╪«╪╖┘ê╪╖ ┘ä╪▒┘ü╪╣ ╪º┘ä┘à╪¡╪¬┘ê┘ë)
+          // 1. الـ Header الترحيبي (تم تصغير الـ Padding والخطوط لرفع المحتوى)
           Padding(
             padding: const EdgeInsets.only(
               top: 10.0,
@@ -99,16 +97,16 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
                 Text(
-                  "┘à╪▒╪¡╪¿╪º┘ï ╪¿┘â ┘ü┘è FIXIT ≡ƒæï",
+                  "مرحباً بك في FIXIT 👋",
                   style: TextStyle(
                     fontFamily: 'Cairo',
                     fontSize: 13,
                     color: AppColors.textSecondary,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
-                  "╪Ñ╪╡┘ä╪º╪¡╪º╪¬┘â ╪º┘ä┘à┘å╪▓┘ä┘è╪⌐ ╪ú╪╡╪¿╪¡╪¬ ╪ú╪│┘ç┘ä",
+                  "إصلاحاتك المنزلية أصبحت أسهل",
                   style: TextStyle(
                     fontFamily: 'Cairo',
                     fontSize: 18,
@@ -120,7 +118,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // 2. ╪º┘ä┘â╪º╪▒┘ê╪│┘è┘ä ╪º┘ä╪ú┘ê╪¬┘ê┘à╪º╪¬┘è┘â┘è (╪¬┘à ╪¬╪╡╪║┘è╪▒ ╪º┘ä╪º╪▒╪¬┘ü╪º╪╣ ┘à┘å 140 ╪Ñ┘ä┘ë 100 ┘ä┘è╪╡╪¿╪¡ ┘å╪¡┘è┘ü╪º┘ï ╪¼╪»╪º┘ï)
+          // 2. الكاروسيل الأوتوماتيكي (تم تصغير الارتفاع من 140 إلى 100 ليصبح نحيفاً جداً)
           SizedBox(
             height: 100,
             child: PageView.builder(
@@ -193,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                           item['icon'],
                           size: 24,
                           color: AppColors.primary,
-                        ), // ╪¬╪╡╪║┘è╪▒ ╪º┘ä╪ú┘è┘é┘ê┘å╪⌐ ┘ä┘Ç 24
+                        ), // تصغير الأيقونة لـ 24
                       ),
                     ],
                   ),
@@ -202,7 +200,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // ┘å┘é╪º╪╖ ╪º┘ä┘à╪ñ╪┤╪▒ ╪ú╪│┘ü┘ä ╪º┘ä┘â╪º╪▒┘ê╪│┘è┘ä (╪¬┘à ╪¬╪╡╪║┘è╪▒ ╪º┘ä┘Ç Padding ╪º┘ä╪╣┘à┘ê╪»┘è)
+          // نقاط المؤشر أسفل الكاروسيل (تم تصغير الـ Padding العمودي)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
@@ -222,7 +220,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // ╪╣┘å┘ê╪º┘å ┘é╪│┘à ╪º┘ä╪¬╪«╪╡╪╡╪º╪¬ (╪ú╪╡╪¿╪¡ ╪º┘ä╪ó┘å ┘à╪▒╪¬┘ü╪╣╪º┘ï ┘ä┘ä╪ú╪╣┘ä┘ë ╪¬┘à╪º┘à╪º┘ï)
+          // عنوان قسم التخصصات (أصبح الآن مرتفعاً للأعلى تماماً)
           const Padding(
             padding: EdgeInsets.only(
               top: 10.0,
@@ -231,7 +229,7 @@ class _HomePageState extends State<HomePage> {
               bottom: 8.0,
             ),
             child: Text(
-              "╪º┘ä╪¬╪«╪╡╪╡╪º╪¬ ╪º┘ä┘à╪¬╪º╪¡╪⌐",
+              "التخصصات المتاحة",
               style: TextStyle(
                 fontFamily: 'Cairo',
                 fontSize: 16,
@@ -241,7 +239,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // 3. ╪┤╪¿┘â╪⌐ ╪º┘ä╪¬╪«╪╡╪╡╪º╪¬ ╪º┘ä╪ú╪▒╪¿╪╣╪⌐ (╪¬╪╣┘à┘ä ┘â╪ú╪▓╪▒╪º╪▒ ┘à╪¿╪º╪┤╪▒╪⌐ ┘ä┘ä╪╖┘ä╪¿)
+          // 3. شبكة التخصصات الأربعة (تعمل كأزرار مباشرة للطلب)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: GridView.builder(
@@ -252,14 +250,13 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio:
-                    1.2, // ╪▓┘è╪º╪»╪⌐ ╪º┘ä┘å╪│╪¿╪⌐ ┘ä╪¬╪╡╪║┘è╪▒ ╪º┘ä┘â╪▒┘ê╪¬ ╪╣┘à┘ê╪»┘è╪º┘ï ┘ê╪¼╪╣┘ä┘ç╪º ┘à┘å╪¿╪│╪╖╪⌐
+                childAspectRatio: 1.2, // زيادة النسبة لتصغير الكروت عمودياً وجعلها منبسطة
               ),
               itemBuilder: (context, index) {
                 final service = _services[index];
                 return InkWell(
                   onTap: () {
-                    print("╪¬┘à ╪º┘ä╪╢╪║╪╖ ┘ä╪Ñ┘å╪┤╪º╪í ╪╖┘ä╪¿ ╪¬╪«╪╡╪╡: ${service['name']}");
+                    print("تم الضغط لإنشاء طلب تخصص: ${service['name']}");
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -310,7 +307,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // ╪╣┘å┘ê╪º┘å ┘é╪│┘à ╪╖┘ä╪¿ ╪╡┘è╪º┘å╪⌐ ╪│╪▒┘è╪╣
+          // عنوان قسم طلب صيانة سريع
           const Padding(
             padding: EdgeInsets.only(
               top: 18.0,
@@ -319,7 +316,7 @@ class _HomePageState extends State<HomePage> {
               bottom: 8.0,
             ),
             child: Text(
-              "╪╖┘ä╪¿ ╪╡┘è╪º┘å╪⌐ ╪│╪▒┘è╪╣",
+              "طلب صيانة سريع",
               style: TextStyle(
                 fontFamily: 'Cairo',
                 fontSize: 16,
@@ -329,7 +326,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // 4. ┘â╪º╪▒╪¬ ┘ê╪▓╪▒ "╪╖┘ä╪¿ ╪╡┘è╪º┘å╪⌐ ┘ü┘ê╪▒┘è ╪╣╪º┘à" ╪º┘ä┘à╪╢╪║┘ê╪╖ ┘ê╪º┘ä╪¼┘à┘è┘ä ┘ü┘è ╪º┘ä╪ú╪│┘ü┘ä
+          // 4. كارت وزر "طلب صيانة فوري عام" المضغوط والجميل في الأسفل
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
@@ -338,7 +335,7 @@ class _HomePageState extends State<HomePage> {
                 gradient: LinearGradient(
                   colors: [
                     AppColors.primary,
-                    AppColors.primary.withOpacity(0.75),// ╪¬╪»╪▒╪¼ ┘ä┘ê┘å┘è ╪¿╪│┘è╪╖ ┘ä╪Ñ╪╢╪º┘ü╪⌐ ╪╣┘à┘é ┘ê╪¼╪º╪░╪¿┘è╪⌐
+                    AppColors.primary.withOpacity(0.75), // تدرج لوني بسيط لإضافة عمق وجاذبية
                   ],
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
@@ -356,7 +353,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
-                    print("╪¬┘à ╪º┘ä╪╢╪║╪╖ ╪╣┘ä┘ë ╪▓╪▒ ╪╖┘ä╪¿ ╪╡┘è╪º┘å╪⌐ ┘ü┘ê╪▒┘è ╪╣╪º┘à");
+                    print("تم الضغط على زر طلب صيانة فوري عام");
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -369,15 +366,15 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
                       vertical: 14.0,
-                    ), // ╪¬┘é┘ä┘è╪╡ ╪º┘ä┘Ç Padding ╪º┘ä╪»╪º╪«┘ä┘è ┘ä╪¬┘é┘ü┘è┘ä ╪º┘ä┘à╪│╪º╪¡╪⌐
+                    ), // تقليص الـ Padding الداخلي لتقفيل المساحة
                     child: Row(
                       children: [
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
-                                "┘ç┘ä ╪¬┘ê╪º╪¼┘ç ╪╣╪╖┘ä╪º┘ï ┘à┘ü╪º╪¼╪ª╪º┘ï╪ƒ",
+                                "هل تواجه عطلاً مفاجئاً؟",
                                 style: TextStyle(
                                   fontFamily: 'Cairo',
                                   fontSize: 18,
@@ -387,7 +384,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               SizedBox(height: 2),
                               Text(
-                                "╪º╪╢╪║╪╖ ┘ç┘å╪º ┘ä╪Ñ┘å╪┤╪º╪í ╪╖┘ä╪¿┘â ╪º┘ä╪ó┘å ┘ê╪»╪╣ ╪º┘ä┘ü┘å┘è┘è┘å ┘è┘é╪»┘à┘ê┘å ╪╣╪▒┘ê╪╢┘ç┘à",
+                                "اضغط هنا لإنشاء طلبك الآن ودع الفنيين يقدمون عروضهم",
                                 style: TextStyle(
                                   fontFamily: 'Cairo',
                                   fontSize: 11,
@@ -419,10 +416,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          const SizedBox(height: 20), // ┘à╪│╪º┘ü╪⌐ ╪ú┘à╪º┘å ╪│┘ü┘ä┘è ╪╡╪║┘è╪▒╪⌐ ╪«┘ü┘è┘ü╪⌐
+          const SizedBox(height: 20), // مسافة أمان سفلية صغيرة خفيفة
         ],
       ),
     );
   }
 }
-
