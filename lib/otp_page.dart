@@ -1,15 +1,21 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:graduation/app_colors.dart';
+import 'package:provider/provider.dart';
+import 'package:graduation/providers/auth_provider.dart';
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({super.key});
+  final String email;
+  const OtpPage({super.key, required this.email});
 
   @override
   State<OtpPage> createState() => _OtpPageState();
 }
 
 class _OtpPageState extends State<OtpPage> {
-  final List<TextEditingController> _controllers = List.generate(4, (_) => TextEditingController());
+  final List<TextEditingController> _controllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
 
   @override
   void dispose() {
@@ -18,6 +24,7 @@ class _OtpPageState extends State<OtpPage> {
     }
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,50 +36,104 @@ class _OtpPageState extends State<OtpPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 80),
-              const Icon(Icons.shield_outlined, size: 80, color: AppColors.primary),
+              const Icon(
+                Icons.shield_outlined,
+                size: 80,
+                color: AppColors.primary,
+              ),
               const SizedBox(height: 24),
               const Text(
                 "Verification Code",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.textPrimary, fontSize: 26, fontWeight: FontWeight.bold, fontFamily: 'Cairo'),
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Cairo',
+                ),
               ),
               const SizedBox(height: 8),
               const Text(
-                "Enter the 4-digit code sent to your phone",
+                "Enter the 6-digit code sent to your phone",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: AppColors.textSecondary, fontFamily: 'Cairo'),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textSecondary,
+                  fontFamily: 'Cairo',
+                ),
               ),
               const SizedBox(height: 40),
 
               // الكارد المضيء الذي يحتوي على حقول الـ OTP
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: AppColors.primary.withOpacity(0.3), width: 1.5),
+                  border: Border.all(
+                    color: AppColors.primary.withOpacity(0.3),
+                    width: 1.5,
+                  ),
                   boxShadow: [
-                    BoxShadow(color: AppColors.primary.withOpacity(0.12), blurRadius: 20, spreadRadius: 5),
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.12),
+                      blurRadius: 20,
+                      spreadRadius: 5,
+                    ),
                   ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: List.generate(4, (index) => _buildOtpBox(index)),
+                  children: List.generate(6, (index) => _buildOtpBox(index)),
                 ),
               ),
               const SizedBox(height: 30),
 
               // زر التأكيد
               ElevatedButton(
-                onPressed: () {
-                  print("تم تأكيد رمز الـ OTP");
+                onPressed: () async {
+                  final authProvider = Provider.of<AuthProvider>(
+                    context,
+                    listen: false,
+                  );
+
+                  String code = _controllers
+                      .map((controller) => controller.text)
+                      .join();
+
+                  bool success = await authProvider.verifyEmail(
+                    widget.email,
+                    code,
+                  );
+
+                  if (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("تم التحقق بنجاح")),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("رمز التحقق غير صحيح"),
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
-                child: const Text("Verify", style: TextStyle(fontFamily: 'Cairo', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                child: const Text(
+                  "Verify",
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ],
           ),
@@ -80,16 +141,21 @@ class _OtpPageState extends State<OtpPage> {
       ),
     );
   }
-// these is for otp text field
+
+  // ويدجت مخصصة لبناء مربعات إدخال الـ OTP
   Widget _buildOtpBox(int index) {
     return SizedBox(
-      width: 50,
+      width: 45,
       child: TextFormField(
         controller: _controllers[index],
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
         maxLength: 1,
-        style: const TextStyle(color: AppColors.textPrimary, fontSize: 22, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
         decoration: InputDecoration(
           counterText: "", // إخفاء عداد الحروف بالأسفل
           enabledBorder: OutlineInputBorder(
@@ -102,10 +168,14 @@ class _OtpPageState extends State<OtpPage> {
           ),
         ),
         onChanged: (value) {
-          if (value.isNotEmpty && index < 3) {
-            FocusScope.of(context).nextFocus(); // الانتقال التلقائي للمربع التالي عند الكتابة
+          if (value.isNotEmpty && index < 5) {
+            FocusScope.of(
+              context,
+            ).nextFocus(); // الانتقال التلقائي للمربع التالي عند الكتابة
           } else if (value.isEmpty && index > 0) {
-            FocusScope.of(context).previousFocus(); // الرجوع للمربع السابق عند المسح
+            FocusScope.of(
+              context,
+            ).previousFocus(); // الرجوع للمربع السابق عند المسح
           }
         },
       ),

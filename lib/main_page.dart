@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:graduation/app_colors.dart';
 import 'package:graduation/home_page.dart';
+import 'package:graduation/to_be_provider.dart';
 import 'package:graduation/order_situations.dart';
 // import 'package:google_nav_bar/google_nav_bar.dart';
 // import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
@@ -15,10 +16,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   bool isDarkMode = true;
   int _selectedIndex = 0;
-   List<Widget> get _pages => [
-    const HomePage(),
-    const OrderSituations(),
-  ];
+  List<Widget> get _pages => [const HomePage(), const OrderSituations()];
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "FIXIT",
           style: TextStyle(
             color: AppColors.textPrimary,
@@ -41,7 +39,7 @@ class _MainPageState extends State<MainPage> {
           Padding(
             padding: const EdgeInsets.only(
               right: 20.0,
-            ), // إعطاء مسافة أمان مريحة للعين
+            ), // إعطاء مساحة أمان مريحة للعين
             child: IconButton(
               icon: const Icon(
                 Icons.notifications_none_rounded,
@@ -49,7 +47,7 @@ class _MainPageState extends State<MainPage> {
                 size: 26,
               ),
               onPressed: () {
-                print("تم الضغط على زر الإشعارات المبعد عن الحافة");
+                // الإشعارات
               },
             ),
           ),
@@ -140,7 +138,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                     subtitle: const Text(
-                      "العناوين، التنبيهات، والأمان",
+                      "تعديل إعدادات الحساب",
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: AppColors.textSecondary,
@@ -175,7 +173,7 @@ class _MainPageState extends State<MainPage> {
                       color: AppColors.primary,
                     ),
                     title: const Text(
-                      "كن مزود خدمة (فني)",
+                      "سجل كمقدم خدمة (تجريبي)",
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: AppColors.primary,
@@ -183,7 +181,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                     subtitle: const Text(
-                      "انضم إلينا واستقبل طلبات الصيانة",
+                      "انضم لمقدمي الخدمات واحصل على طلبات في منطقتك",
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: AppColors.textSecondary,
@@ -195,11 +193,13 @@ class _MainPageState extends State<MainPage> {
                       color: AppColors.primary,
                       size: 14,
                     ),
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ToBeProvider()),
+                    ),
                   ),
                 ),
               ),
-
               // --------------------------------------------------------
               // سبيس أو مساحة فارغة سحرية (Spacer) تدفع أي كود تحتها إلى قاع الشاشة فوراً
               const Spacer(),
@@ -209,11 +209,11 @@ class _MainPageState extends State<MainPage> {
               Padding(
                 padding: const EdgeInsets.only(
                   bottom: 20.0,
-                ), // مسافة أمان من الأسفل
+                ), // مساحة أمان من الأسفل
                 child: Card(
                   color: const Color(
                     0xFF2A1B24,
-                  ), // درجة داكنة مائلة للأحمر لتناسب مفهوم الـ Logout
+                  ), // درجة داكنة مائلة للأحمر لتتناسب مع مفهوم الـ Logout
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
@@ -225,7 +225,7 @@ class _MainPageState extends State<MainPage> {
                     leading: const Icon(
                       Icons.logout_rounded,
                       color: Colors.redAccent,
-                    ), // أيقونة باللون الأحمر
+                    ), // أيقونة بالون الأحمر
                     title: const Text(
                       "تسجيل الخروج",
                       style: TextStyle(
@@ -237,7 +237,6 @@ class _MainPageState extends State<MainPage> {
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      print("تم الضغط على تسجيل الخروج");
                     },
                   ),
                 ),
@@ -252,11 +251,11 @@ class _MainPageState extends State<MainPage> {
         padding: const EdgeInsets.only(
           bottom: 3,
           top: 3,
-        ), // مسافة أمان من الأعلى والأسفل
+        ), // مساحة أمان من الأعلى والأسفل
         margin: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 25,
-        ), // مسافة أمان من الجوانب
+        ), // مساحة أمان من الجوانب
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(24),
@@ -273,12 +272,16 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
-        // margin: const EdgeInsets.all(16),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
           child: Theme(
             data: Theme.of(context).copyWith(
-              splashColor: const Color.fromARGB(0, 245, 208, 208), // إزالة تأثير النقر الافتراضي
+              splashColor: const Color.fromARGB(
+                0,
+                245,
+                208,
+                208,
+              ), // إزالة تأثير النقر الافتراضي
               highlightColor:
                   Colors.transparent, // إزالة تأثير التحديد الافتراضي
             ),
@@ -310,7 +313,7 @@ class _MainPageState extends State<MainPage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.list_alt_rounded),
-                  label: "طلباتي",
+                  label: "الطلبات",
                 ),
               ],
             ),

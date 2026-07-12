@@ -1,7 +1,7 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:graduation/app_colors.dart';
-import 'package:graduation/create_order.dart'; // استدعاء صفحة الفورم الخاصة بإنشاء الطلب
+import 'package:graduation/create_order.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                     color: AppColors.textSecondary,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   "إصلاحاتك المنزلية أصبحت أسهل",
                   style: TextStyle(
@@ -250,8 +250,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio:
-                    1.2, // زيادة النسبة لتصغير الكروت عمودياً وجعلها منبسطة
+                childAspectRatio: 1.2, // زيادة النسبة لتصغير الكروت عمودياً وجعلها منبسطة
               ),
               itemBuilder: (context, index) {
                 final service = _services[index];
@@ -336,7 +335,7 @@ class _HomePageState extends State<HomePage> {
                 gradient: LinearGradient(
                   colors: [
                     AppColors.primary,
-                    AppColors.primary.withOpacity(0.75),// تدرج لوني بسيط لإضافة عمق وجاذبية
+                    AppColors.primary.withOpacity(0.75), // تدرج لوني بسيط لإضافة عمق وجاذبية
                   ],
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
@@ -373,7 +372,7 @@ class _HomePageState extends State<HomePage> {
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "هل تواجه عطلاً مفاجئاً؟",
                                 style: TextStyle(
@@ -417,7 +416,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          const SizedBox(height: 20), // مسافة أمان سفلي صغيرة خفيفة
+          const SizedBox(height: 20), // مسافة أمان سفلية صغيرة خفيفة
         ],
       ),
     );
