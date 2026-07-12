@@ -1,23 +1,25 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:graduation/app_colors.dart';
 import 'package:graduation/home_page.dart';
+import 'package:graduation/to_be_provider.dart';
 import 'package:graduation/order_situations.dart';
-import 'package:graduation/business_logic/main/main_page_provider.dart';
 // import 'package:google_nav_bar/google_nav_bar.dart';
 // import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
-  static const List<Widget> _pages = [
-    HomePage(),
-    OrderSituations(),
-  ];
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  bool isDarkMode = true;
+  int _selectedIndex = 0;
+  List<Widget> get _pages => [const HomePage(), const OrderSituations()];
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<MainPageProvider>();
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -37,7 +39,7 @@ class MainPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(
               right: 20.0,
-            ), // إعطاء مسافة أمان مريحة للعين
+            ), // ╪Ñ╪╣╪╖╪º╪í ┘à╪│╪º┘ü╪⌐ ╪ú┘à╪º┘å ┘à╪▒┘è╪¡╪⌐ ┘ä┘ä╪╣┘è┘å
             child: IconButton(
               icon: const Icon(
                 Icons.notifications_none_rounded,
@@ -45,15 +47,15 @@ class MainPage extends StatelessWidget {
                 size: 26,
               ),
               onPressed: () {
-                print("تم الضغط على زر الإشعارات المبعد عن الحافة");
+                // الإشعارات
               },
             ),
           ),
         ],
       ),
       drawer: Drawer(
-        backgroundColor: AppColors.textPrimary,
-          child: Container(
+        backgroundColor: AppColors.surface,
+        child: Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
             border: Border(
@@ -62,10 +64,10 @@ class MainPage extends StatelessWidget {
                 width: 1.5,
               ),
             ),
-          ), 
+          ),
           child: Column(
             children: [
-              // عنوان القائمة العلوي
+              // ╪╣┘å┘ê╪º┘å ╪º┘ä┘é╪º╪ª┘à╪⌐ ╪º┘ä╪╣┘ä┘ê┘è
               const Padding(
                 padding: EdgeInsets.only(top: 60.0, bottom: 20.0),
                 child: Text(
@@ -79,7 +81,7 @@ class MainPage extends StatelessWidget {
                 ),
               ),
 
-              // 1. كارت الملف الشخصي (Profile Card)
+              // 1. ┘â╪º╪▒╪¬ ╪º┘ä┘à┘ä┘ü ╪º┘ä╪┤╪«╪╡┘è (Profile Card)
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 5.0,
@@ -126,7 +128,7 @@ class MainPage extends StatelessWidget {
                     leading: const Icon(
                       Icons.settings_rounded,
                       color: Colors.amberAccent,
-                    ), // أيقونة بلون دافئ مميز
+                    ), // ╪ú┘è┘é┘ê┘å╪⌐ ╪¿┘ä┘ê┘å ╪»╪º┘ü╪ª ┘à┘à┘è╪▓
                     title: const Text(
                       "الإعدادات",
                       style: TextStyle(
@@ -136,7 +138,7 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     subtitle: const Text(
-                      "العناوين، التنبيهات، والأمان",
+                      "تعديل إعدادات الحساب",
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: AppColors.textSecondary,
@@ -157,21 +159,23 @@ class MainPage extends StatelessWidget {
                 child: Card(
                   color: const Color(
                     0xFF1E293B,
-                  ), // درجة مختلفة قليلاً لتمييز خيار الورش والعمل
+                  ), // ╪»╪▒╪¼╪⌐ ┘à╪«╪¬┘ä┘ü╪⌐ ┘é┘ä┘è┘ä╪º┘ï ┘ä╪¬┘à┘è┘è╪▓ ╪«┘è╪º╪▒ ╪º┘ä┘ê╪▒╪┤ ┘ê╪º┘ä╪╣┘à┘ä
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
                       color: AppColors.primary.withOpacity(0.3),
                       width: 1,
-                    ), // تحديد مضيء خفيف
+                    ), // ╪¬╪¡╪»┘è╪» ┘à╪╢┘è╪í ╪«┘ü┘è┘ü
                   ),
                   child: ListTile(
+                    
+                    
                     leading: const Icon(
                       Icons.build_circle_rounded,
                       color: AppColors.primary,
                     ),
                     title: const Text(
-                      "كن مزود خدمة (فني)",
+                      "سجل كمقدم خدمة (تجريبي)",
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: AppColors.primary,
@@ -179,7 +183,7 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     subtitle: const Text(
-                      "انضم إلينا واستقبل طلبات الصيانة",
+                      "انضم لمقدمي الخدمات واحصل على طلبات في منطقتك",
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: AppColors.textSecondary,
@@ -191,49 +195,50 @@ class MainPage extends StatelessWidget {
                       color: AppColors.primary,
                       size: 14,
                     ),
-                    onTap: () => Navigator.pop(context),
+                   onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ToBeProvider()),
                   ),
                 ),
               ),
-
+              ),
               // --------------------------------------------------------
-              // سبيس أو مساحة فارغة سحرية (Spacer) تدفع أي كود تحتها إلى قاع الشاشة فوراً
+              // ╪│╪¿┘è╪│ ╪ú┘ê ┘à╪│╪º╪¡╪⌐ ┘ü╪º╪▒╪║╪⌐ ╪│╪¡╪▒┘è╪⌐ (Spacer) ╪¬╪»┘ü╪╣ ╪ú┘è ┘â┘ê╪» ╪¬╪¡╪¬┘ç╪º ╪Ñ┘ä┘ë ┘é╪º╪╣ ╪º┘ä╪┤╪º╪┤╪⌐ ┘ü┘ê╪▒╪º┘ï
               const Spacer(),
               // --------------------------------------------------------
 
-              // --- كارت تسجيل الخروج في أسفل الـ Drawer تماماً ---
+              // --- ┘â╪º╪▒╪¬ ╪¬╪│╪¼┘è┘ä ╪º┘ä╪«╪▒┘ê╪¼ ┘ü┘è ╪ú╪│┘ü┘ä ╪º┘ä┘Ç Drawer ╪¬┘à╪º┘à╪º┘ï ---
               Padding(
                 padding: const EdgeInsets.only(
                   bottom: 20.0,
-                ), // مسافة أمان من الأسفل
+                ), // ┘à╪│╪º┘ü╪⌐ ╪ú┘à╪º┘å ┘à┘å ╪º┘ä╪ú╪│┘ü┘ä
                 child: Card(
                   color: const Color(
                     0xFF2A1B24,
-                  ), // درجة داكنة مائلة للأحمر لتناسب مفهوم الـ Logout
+                  ), // ╪»╪▒╪¼╪⌐ ╪»╪º┘â┘å╪⌐ ┘à╪º╪ª┘ä╪⌐ ┘ä┘ä╪ú╪¡┘à╪▒ ┘ä╪¬┘å╪º╪│╪¿ ┘à┘ü┘ç┘ê┘à ╪º┘ä┘Ç Logout
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
                       color: Colors.redAccent.withOpacity(0.2),
                       width: 1,
-                    ), // إطار أحمر خفيف
+                    ), // ╪Ñ╪╖╪º╪▒ ╪ú╪¡┘à╪▒ ╪«┘ü┘è┘ü
                   ),
                   child: ListTile(
                     leading: const Icon(
                       Icons.logout_rounded,
                       color: Colors.redAccent,
-                    ), // أيقونة باللون الأحمر
+                    ), // ╪ú┘è┘é┘ê┘å╪⌐ ╪¿╪º┘ä┘ä┘ê┘å ╪º┘ä╪ú╪¡┘à╪▒
                     title: const Text(
                       "تسجيل الخروج",
                       style: TextStyle(
                         fontFamily: 'Cairo',
-                        color: Colors.redAccent, // نص أحمر تحذيري أنيق
+                        color: Colors.redAccent, // ┘å╪╡ ╪ú╪¡┘à╪▒ ╪¬╪¡╪░┘è╪▒┘è ╪ú┘å┘è┘é
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
                       ),
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      print("تم الضغط على تسجيل الخروج");
                     },
                   ),
                 ),
@@ -242,17 +247,17 @@ class MainPage extends StatelessWidget {
           ),
         ),
       ),
-      body: _pages[provider.selectedIndex],
+      body: _pages[_selectedIndex],
 
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(
           bottom: 3,
           top: 3,
-        ), // مسافة أمان من الأعلى والأسفل
+        ), // ┘à╪│╪º┘ü╪⌐ ╪ú┘à╪º┘å ┘à┘å ╪º┘ä╪ú╪╣┘ä┘ë ┘ê╪º┘ä╪ú╪│┘ü┘ä
         margin: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 25,
-        ), // مسافة أمان من الجوانب
+        ), // ┘à╪│╪º┘ü╪⌐ ╪ú┘à╪º┘å ┘à┘å ╪º┘ä╪¼┘ê╪º┘å╪¿
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(24),
@@ -274,13 +279,22 @@ class MainPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           child: Theme(
             data: Theme.of(context).copyWith(
-              splashColor: const Color.fromARGB(0, 245, 208, 208), // إزالة تأثير النقر الافتراضي
+              splashColor: const Color.fromARGB(
+                0,
+                245,
+                208,
+                208,
+              ), // ╪Ñ╪▓╪º┘ä╪⌐ ╪¬╪ú╪½┘è╪▒ ╪º┘ä┘å┘é╪▒ ╪º┘ä╪º┘ü╪¬╪▒╪º╪╢┘è
               highlightColor:
-                  Colors.transparent, // إزالة تأثير التحديد الافتراضي
+                  Colors.transparent, // ╪Ñ╪▓╪º┘ä╪⌐ ╪¬╪ú╪½┘è╪▒ ╪º┘ä╪¬╪¡╪»┘è╪» ╪º┘ä╪º┘ü╪¬╪▒╪º╪╢┘è
             ),
             child: BottomNavigationBar(
-              currentIndex: provider.selectedIndex,
-              onTap: provider.setSelectedIndex,
+              currentIndex: _selectedIndex,
+              onTap: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
               backgroundColor: Colors.transparent,
               selectedItemColor: AppColors.primary,
               unselectedIconTheme: const IconThemeData(size: 24),
@@ -302,7 +316,7 @@ class MainPage extends StatelessWidget {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.list_alt_rounded),
-                  label: "طلباتي",
+                  label: "الطلبات",
                 ),
               ],
             ),
@@ -312,3 +326,4 @@ class MainPage extends StatelessWidget {
     );
   }
 }
+

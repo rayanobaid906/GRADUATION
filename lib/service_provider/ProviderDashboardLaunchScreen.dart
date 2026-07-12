@@ -151,7 +151,12 @@ class _ProviderDashboardContent extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const SubscriptionPaymentScreen()),
                   );
                 }),
-                _buildActionButton('📊 عروضي الحالية', Colors.purple.shade700, () {}),
+                _buildActionButton('📊 عروضي الحالية', Colors.purple.shade700, () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AvailableOrdersScreen()),
+                  );
+                }),
               ],
             ),
           ],
@@ -181,15 +186,15 @@ class _ProviderDashboardContent extends StatelessWidget {
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 4, // 4 عناصر في نفس السطر
-      childAspectRatio: 0.8,
+      crossAxisCount: 1, // 4 عناصر في نفس السطر
+      childAspectRatio: 5,
       mainAxisSpacing: 10,
       crossAxisSpacing: 10,
       children: [
-        _buildServiceCategory('⚡\nكهرباء', Colors.orange),
-        _buildServiceCategory('🚰\nسباكة', Colors.blue),
-        _buildServiceCategory('❄️\nتكييف', Colors.cyan),
-        _buildServiceCategory('📺\nأجهزة', Colors.purple),
+        // _buildServiceCategory('⚡\nكهرباء', Colors.orange),
+        _buildServiceCategory('طلب خدمة', Colors.blue),
+        // _buildServiceCategory('❄️\nتكييف', Colors.cyan),
+        // _buildServiceCategory('📺\nأجهزة', Colors.purple),
       ],
     );
   }

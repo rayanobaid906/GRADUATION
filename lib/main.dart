@@ -2,9 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation/login_page.dart';
 import 'package:graduation/main_page.dart';
-import 'package:graduation/otp_page.dart';
 import 'package:graduation/sign_up.dart';
-import 'package:graduation/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'package:graduation/app_colors.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,6 +18,8 @@ import 'business_logic/order/create_order_provider.dart';
 import 'service_provider/business_logic/available_orders/available_orders_provider.dart';
 import 'service_provider/business_logic/subscription/subscription_provider.dart';
 import 'service_provider/ProviderDashboardLaunchScreen.dart';
+import 'package:graduation/providers/auth_provider.dart' as remote_auth;
+import 'package:graduation/providers/order_provider.dart' as remote_order;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,6 +63,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => CreateOrderProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => remote_auth.AuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => remote_order.OrderProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'بوابة مقدم الخدمة',
@@ -74,7 +80,12 @@ class MyApp extends StatelessWidget {
         ),
         locale: const Locale('ar', 'AE'),
         supportedLocales: const [Locale('ar', 'AE')],
-        home: const ProviderDashboard(),
+        home: const MainPage(),
+        routes: {
+          '/login': (context) => const LoginPage(),
+          '/signup': (context) => const SignupPage(),
+          '/main_page': (context) => const MainPage(),
+        },
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

@@ -1,9 +1,11 @@
-// import 'dart:math';
-
+﻿// import 'dart:math';
+import 'package:graduation/services/api_services.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation/custom_textfiled.dart';
 import 'package:graduation/app_colors.dart';
-import 'package:graduation/sign_up.dart';
+import 'package:graduation/custom_textfiled.dart';
+import 'package:provider/provider.dart';
+import 'package:graduation/providers/auth_provider.dart';
+import 'package:graduation/token_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,10 +15,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController get _emailController => TextEditingController();
-  TextEditingController get _passwordController => TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   bool _isPasswordHidden = true;
+  final ApiService apiService = ApiService();
   @override
   void dispose() {
     _emailController.dispose();
@@ -66,13 +69,19 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color:AppColors.primary.withValues(alpha: 0.3), width: 1.5),
+                  border: Border.all(
+                    color: AppColors.primary.withOpacity(0.3),
+                    width: 1.5,
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.12),
+                      color: AppColors.primary.withOpacity(0.12),
                       blurRadius: 20,
                       spreadRadius: 10,
-                      offset: Offset(0, 0), // that mean the light around all the container 
+                      offset: Offset(
+                        0,
+                        0,
+                      ), // that mean the light around all the container
                     ),
                   ],
                 ),
@@ -88,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     CustomTextField(
                       controller: _passwordController,
-                      hintText:  'Password',
+                      hintText: 'Password',
                       prefixIcon: Icons.lock_outline,
                       obscureText: _isPasswordHidden,
                       suffixIcon: IconButton(
@@ -99,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: AppColors.textSecondary,
                         ),
                         onPressed: () {
-                          // تحديث الحالة لتبديل الرؤية
+                          // ╪¬╪¡╪»┘è╪½ ╪º┘ä╪¡╪º┘ä╪⌐ ┘ä╪¬╪¿╪»┘è┘ä ╪º┘ä╪▒╪ñ┘è╪⌐
                           setState(() {
                             _isPasswordHidden = !_isPasswordHidden;
                           });
@@ -107,28 +116,50 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(height: 12),
-                    Container(padding: EdgeInsets.only(left: 150),child:TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "forget password ?",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontFamily: 'Cairo',
-                          fontSize: 14,
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.bold,
+                    Container(
+                      padding: EdgeInsets.only(left: 150),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "forget password ?",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontFamily: 'Cairo',
+                            fontSize: 14,
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    )),
-                    
-                    
+                    ),
                   ],
                 ),
               ),
               SizedBox(height: 24),
 
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final authProvider = Provider.of<AuthProvider>(
+                    context,
+                    listen: false,
+                  );
+
+                  bool success = await authProvider.login(
+                    _emailController.text,
+                    _passwordController.text,
+                  );
+
+                  if (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("تم تسجيل الدخول بنجاح")),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("فشل تسجيل الدخول")),
+                    );
+                  }
+                },
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: EdgeInsets.symmetric(vertical: 14),
@@ -158,9 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignupPage()));},
+                    onPressed: () {},
                     child: Text(
                       "Sign Up",
                       style: TextStyle(
@@ -180,3 +209,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

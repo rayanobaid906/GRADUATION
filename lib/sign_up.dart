@@ -1,9 +1,11 @@
-// import 'dart:math';
+﻿// import 'dart:math';
+import 'package:graduation/otp_page.dart';
+import 'package:provider/provider.dart';
+import 'package:graduation/providers/auth_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:graduation/custom_textfiled.dart';
 import 'package:graduation/app_colors.dart';
-import 'package:graduation/login_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -13,15 +15,16 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final TextEditingController  _emailController = TextEditingController();
-  final TextEditingController  _passwordController = TextEditingController();
-  final TextEditingController  _numberController = TextEditingController();
+  TextEditingController _fullnameContoller = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
   bool _isPasswordHidden = true;
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _numberController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -68,12 +71,12 @@ class _SignupPageState extends State<SignupPage> {
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.3),
+                    color: AppColors.primary.withOpacity(0.3),
                     width: 1.5,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.12),
+                      color: AppColors.primary.withOpacity(0.12),
                       blurRadius: 20,
                       spreadRadius: 10,
                       offset: Offset(
@@ -87,7 +90,13 @@ class _SignupPageState extends State<SignupPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     CustomTextField(
-                      controller: _numberController,
+                      controller: _fullnameContoller,
+                      hintText: 'Full Name',
+                      prefixIcon: Icons.person_2_outlined,
+                    ),
+                    SizedBox(height: 16),
+                    CustomTextField(
+                      controller: _phoneController,
                       hintText: 'Phone Number',
                       prefixIcon: Icons.phone_outlined,
                       keyboardType: TextInputType.phone,
@@ -113,7 +122,7 @@ class _SignupPageState extends State<SignupPage> {
                           color: AppColors.textSecondary,
                         ),
                         onPressed: () {
-                          // تحديث الحالة لتبديل الرؤية
+                          // ╪¬╪¡╪»┘è╪½ ╪º┘ä╪¡╪º┘ä╪⌐ ┘ä╪¬╪¿╪»┘è┘ä ╪º┘ä╪▒╪ñ┘è╪⌐
                           setState(() {
                             _isPasswordHidden = !_isPasswordHidden;
                           });
@@ -142,8 +151,40 @@ class _SignupPageState extends State<SignupPage> {
               ),
               SizedBox(height: 24),
 
-              ElevatedButton(
-                onPressed: () {},
+              ElevatedButton( 
+              
+                onPressed: () async {
+                  print("BUTTON WORKING");
+                  final authProvider = Provider.of<AuthProvider>(
+                    context,
+                    listen: false,
+                  );
+
+                  bool success = await authProvider.register(
+                    _fullnameContoller.text,
+                    _emailController.text,
+                    _phoneController.text,
+                    _passwordController.text,
+                  );
+
+                  if (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("تم التسجيل بنجاح")),
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            OtpPage(email: _emailController.text),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("فشل التسجيل")),
+                    );
+                  }
+                },
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: EdgeInsets.symmetric(vertical: 14),
@@ -151,7 +192,8 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-                child: Text("create account",
+                child: Text(
+                  "create account",
                   style: TextStyle(
                     fontFamily: 'Cairo',
                     fontSize: 16,
@@ -161,32 +203,30 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               SizedBox(height: 14),
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                   Text(
-                     "already have account?",
-                   style: TextStyle(
-                       fontSize: 14,
-                       color: AppColors.textSecondary,
-                     ),
-                   ),
-                   TextButton(
-                     onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()));},
-                     child: Text(
-                       "Sign In",
-                       style: TextStyle(
-                         fontFamily: 'Cairo',
-                         fontSize: 14,
-                         color: AppColors.primary,
-                         fontWeight: FontWeight.bold,
-                       ),
-                     ),
-                   ),
-                 ],
-               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "already have account?",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Sign In",
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        fontSize: 14,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -194,3 +234,4 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
+
